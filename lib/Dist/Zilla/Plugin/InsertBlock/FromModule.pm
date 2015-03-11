@@ -15,7 +15,7 @@ sub _insert_block {
     my($self, $module, $name) = @_;
 
     my $file = module_path(module=>$module) or
-        $log->log_fatal(["can't find path for module %s", $module]);
+        $self->log_fatal(["can't find path for module %s", $module]);
 
     $self->SUPER::_insert_block($file, $name);
 }

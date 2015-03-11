@@ -27,7 +27,7 @@ sub munge_file {
     my ($self, $file) = @_;
     my $content = $file->content;
     if ($content =~ s{^#\s*INSERT_BLOCK:\s*(.*)\s+(\w+)\s*$}{$self->_insert_block($1, $2)."\n"}egm) {
-        $self->log(["inserting block from file '%s' named %s into '%s'", $1, $2, $file->name]);
+        $self->log(["inserting block from '%s' named %s into '%s'", $1, $2, $file->name]);
         $file->content($content);
     }
 }
