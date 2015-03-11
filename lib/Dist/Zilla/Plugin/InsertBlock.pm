@@ -108,11 +108,13 @@ This plugin finds C<< # INSERT_BLOCK: <file> <name> >> directive in your
 POD/code, find the block of text named I<name> in I<file>, and inserts the block
 of text to replace the directive.
 
-Block of code is enclosed using either this syntax:
+Block is marked/defined using either this syntax:
 
- # BEGIN_BLOCK: Name
+ =for BEGIN_BLOCK: Name
+
  ...
- # END_BLOCK: Name
+
+ =for END_BLOCK: Name
 
 or this syntax:
 
@@ -120,7 +122,7 @@ or this syntax:
  ...
  # END_BLOCK: Name
 
-Name is case-sensitive.
+Block name is case-sensitive.
 
 This plugin can be useful to avoid repetition/manual copy-paste, e.g. you want
 to list POD attributes, methods, etc from a base class into a subclass.
