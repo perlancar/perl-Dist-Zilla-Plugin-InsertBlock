@@ -43,17 +43,18 @@ sub _insert_block {
         local $/;
         $content = <$fh>;
     }
+
     if ($content =~ /^=for [ \t]+ BEGIN_BLOCK: [ \t]+ \Q$name\E[ \t]*
-                     (?:\n[ \t]*)+
+                     (?:\n[ \t]*)*
                      (.+?)
-                     (?:\n[ \t]*)+
+                     (?:\n[ \t]*)*
                      ^=for [ \t]+ END_BLOCK: [ \t]+ \Q$name\E/msx) {
         return $1;
     } elsif ($content =~ /^\# [ \t]* BEGIN_BLOCK: [ \t]+ \Q$name\E[ \t]*
                      (?:\n[ \t]*)+
                      (.+?)
                      (?:\n[ \t]*)+
-                     ^\# [ \t]* END_BLOCK: [ \t]+ \Q$name\E/msx/) {
+                     ^\# [ \t]* END_BLOCK: [ \t]+ \Q$name\E/msx) {
         return $1;
     } else {
         $self->log_fatal(["can't find block named %s in file '%s'", $name, $file]);
@@ -78,13 +79,13 @@ In lib/Foo/Base.pm:
 
  =head1 ATTRIBUTES
 
- =for BEGIN_BLOCK: Block1
+ =for BEGIN_BLOCK: attributes
 
  =head2 attr1
 
  =head2 attr2
 
- =for END_BLOCK: Block1
+ =for END_BLOCK: attributes
 
  ...
 
@@ -94,7 +95,7 @@ In lib/Foo/Bar.pm:
 
  =head1 ATTRIBUTES
 
- # INSERT_BLOCK: lib/Foo/Bar.pm Attributes
+ # INSERT_BLOCK: lib/Foo/Bar.pm attributes
 
  =head2 attr3
 
@@ -118,6 +119,8 @@ or this syntax:
  # BEGIN_BLOCK: Name
  ...
  # END_BLOCK: Name
+
+Name is case-sensitive.
 
 This plugin can be useful to avoid repetition/manual copy-paste, e.g. you want
 to list POD attributes, methods, etc from a base class into a subclass.
