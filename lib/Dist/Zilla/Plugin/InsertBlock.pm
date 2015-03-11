@@ -79,13 +79,13 @@ In lib/Foo/Base.pm:
 
  =head1 ATTRIBUTES
 
- =for BEGIN_BLOCK: attributes
+ =for BEGIN_BLOCK: base_attributes
 
  =head2 attr1
 
  =head2 attr2
 
- =for END_BLOCK: attributes
+ =for END_BLOCK: base_attributes
 
  ...
 
@@ -95,7 +95,7 @@ In lib/Foo/Bar.pm:
 
  =head1 ATTRIBUTES
 
- # INSERT_BLOCK: lib/Foo/Bar.pm attributes
+ # INSERT_BLOCK: lib/Foo/Bar.pm base_attributes
 
  =head2 attr3
 
@@ -104,7 +104,7 @@ In lib/Foo/Bar.pm:
 
 =head1 DESCRIPTION
 
-This plugin finds C<<# INSERT_BLOCK: <file> <name> >> directive in your
+This plugin finds C<< # INSERT_BLOCK: <file> <name> >> directive in your
 POD/code, find the block of text named I<name> in I<file>, and inserts the block
 of text to replace the directive.
 
