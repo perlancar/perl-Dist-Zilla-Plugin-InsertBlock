@@ -1,5 +1,12 @@
 Revision history for Dist-Zilla-Plugin-InsertBlock
 
+0.04    2015-03-21 (PERLANCAR)
+
+	- No functional changes.
+
+	- Tweak logging statement.
+
+
 0.03    2015-03-11 (PERLANCAR)
 
 	- Add module: DZP:InsertBlock::FromModule.
