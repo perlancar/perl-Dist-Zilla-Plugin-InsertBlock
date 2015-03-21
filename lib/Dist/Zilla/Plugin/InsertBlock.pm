@@ -26,14 +26,13 @@ sub munge_files {
 sub munge_file {
     my ($self, $file) = @_;
     my $content = $file->content;
-    if ($content =~ s{^#\s*INSERT_BLOCK:\s*(.*)\s+(\w+)\s*$}{$self->_insert_block($1, $2)."\n"}egm) {
-        $self->log(["inserting block from '%s' named %s into '%s'", $1, $2, $file->name]);
+    if ($content =~ s{^#\s*INSERT_BLOCK:\s*(.*)\s+(\w+)\s*$}{$self->_insert_block($1, $2, $file->name)."\n"}egm) {
         $file->content($content);
     }
 }
 
 sub _insert_block {
-    my($self, $file, $name) = @_;
+    my($self, $file, $name, $target) = @_;
 
     open my($fh), "<", $file or do {
         $self->log_fatal(["can't open %s: %s", $file, $!]);
@@ -49,12 +48,14 @@ sub _insert_block {
                      (.+?)
                      (?:\n[ \t]*)*
                      ^=for [ \t]+ END_BLOCK: [ \t]+ \Q$name\E/msx) {
+        $self->log(["inserting block from '%s' named %s into '%s'", $file, $name, $target]);
         return $1;
     } elsif ($content =~ /^\# [ \t]* BEGIN_BLOCK: [ \t]+ \Q$name\E[ \t]*
                      (?:\n[ \t]*)+
                      (.+?)
                      (?:\n[ \t]*)+
                      ^\# [ \t]* END_BLOCK: [ \t]+ \Q$name\E/msx) {
+        $self->log(["inserting block from '%s' named %s into '%s'", $file, $name, $target]);
         return $1;
     } else {
         $self->log_fatal(["can't find block named %s in file '%s'", $name, $file]);
@@ -138,4 +139,3 @@ L<Dist::Zilla::Plugin::InsertCommandOutput>
 
 L<Dist::Zilla::Plugin::InsertExample> - which basically insert whole files
 instead of just a block of text from a file
-

@@ -12,12 +12,12 @@ use Module::Path::More qw(module_path);
 use parent qw(Dist::Zilla::Plugin::InsertBlock);
 
 sub _insert_block {
-    my($self, $module, $name) = @_;
+    my($self, $module, $name, $target) = @_;
 
     my $file = module_path(module=>$module) or
         $self->log_fatal(["can't find path for module %s", $module]);
 
-    $self->SUPER::_insert_block($file, $name);
+    $self->SUPER::_insert_block($file, $name, $target);
 }
 
 __PACKAGE__->meta->make_immutable;
