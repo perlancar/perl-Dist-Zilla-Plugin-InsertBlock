@@ -11,7 +11,7 @@ use Moose;
 with (
     'Dist::Zilla::Role::FileMunger',
     'Dist::Zilla::Role::FileFinderUser' => {
-        default_finders => [':InstallModules', ':ExecFiles'],
+        default_finders => [':InstallModules', ':ExecFiles', ':TestFiles'],
     },
 );
 
