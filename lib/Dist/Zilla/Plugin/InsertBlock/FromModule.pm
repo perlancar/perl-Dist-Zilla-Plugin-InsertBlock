@@ -11,6 +11,18 @@ use Module::Path::More qw(module_path);
 
 use parent qw(Dist::Zilla::Plugin::InsertBlock);
 
+sub BUILD {
+    my $self = shift;
+
+    if ($self->zilla->plugin_named('InsertBlock')) {
+        # if user also loads InsertBlock plugin, use another directive so the
+        # two don't clash
+        $self->_directive_re(qr/INSERT_BLOCK_FROM_MODULE/);
+    } else {
+        $self->_directive_re(qr/INSERT_BLOCK(?:_FROM_MODULE)?/);
+    }
+}
+
 sub _insert_block {
     my($self, $module, $name, $target) = @_;
 
@@ -38,7 +50,7 @@ In lib/Foo/Bar.pm:
 
  =head1 ATTRIBUTES
 
- # INSERT_BLOCK: Foo::Base base_attributes
+ # INSERT_BLOCK_FROM_MODULE: Foo::Base base_attributes
 
  =head2 attr3
 

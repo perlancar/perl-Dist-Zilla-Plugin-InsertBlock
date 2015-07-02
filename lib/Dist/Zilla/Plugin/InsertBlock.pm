@@ -17,6 +17,8 @@ with (
 
 use namespace::autoclean;
 
+has _directive_re => (is=>'rw', default=>sub{qr/INSERT_BLOCK/});
+
 sub munge_files {
     my $self = shift;
 
@@ -26,7 +28,8 @@ sub munge_files {
 sub munge_file {
     my ($self, $file) = @_;
     my $content = $file->content;
-    if ($content =~ s{^#\s*INSERT_BLOCK:\s*(.*)\s+(\w+)\s*$}{$self->_insert_block($1, $2, $file->name)."\n"}egm) {
+    my $directive = $self->_directive_re;
+    if ($content =~ s{^#\s*$directive:\s*(.*)\s+(\w+)\s*$}{$self->_insert_block($1, $2, $file->name)."\n"}egm) {
         $file->content($content);
     }
 }
