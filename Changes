@@ -1,5 +1,13 @@
 Revision history for Dist-Zilla-Plugin-InsertBlock
 
+0.06    2015-07-02 (PERLANCAR)
+
+	- If both InsertBlock and InsertBlock::FromModule plugins are
+	  loaded, InsertBlock::FromModule will use
+	  #INSERT_BLOCK_FROM_MODULE directive instead of #INSERT_BLOCK, to
+	  avoid clash.
+
+
 0.05    2015-06-18 (PERLANCAR)
 
 	- Include :TestFiles.
