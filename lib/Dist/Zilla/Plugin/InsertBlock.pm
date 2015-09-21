@@ -77,6 +77,16 @@ In dist.ini:
 
  [InsertBlock]
 
+In lib/Baz.pm:
+
+ ...
+
+ # BEGIN_BLOCK: some_code
+
+ ...
+
+ # END_BLOCK
+
 In lib/Foo/Base.pm:
 
  ...
@@ -94,6 +104,10 @@ In lib/Foo/Base.pm:
  ...
 
 In lib/Foo/Bar.pm:
+
+ ...
+
+ # INSERT_BLOCK: lib/Baz.pm some_code
 
  ...
 
@@ -133,6 +147,8 @@ to list POD attributes, methods, etc from a base class into a subclass.
 
 
 =head1 SEE ALSO
+
+L<Dist::Zilla::Plugin::InsertBlock::FromModule>
 
 L<Dist::Zilla::Plugin::InsertCodeResult>
 

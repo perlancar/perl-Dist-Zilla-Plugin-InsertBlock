@@ -44,7 +44,37 @@ In dist.ini:
 
  [InsertBlock::FromModule]
 
+In lib/Baz.pm:
+
+ ...
+
+ # BEGIN_BLOCK: some_code
+
+ ...
+
+ # END_BLOCK
+
+In lib/Foo/Base.pm:
+
+ ...
+
+ =head1 ATTRIBUTES
+
+ =for BEGIN_BLOCK: base_attributes
+
+ =head2 attr1
+
+ =head2 attr2
+
+ =for END_BLOCK: base_attributes
+
+ ...
+
 In lib/Foo/Bar.pm:
+
+ ...
+
+ # INSERT_BLOCK_FROM_MODULE: Bar some_code
 
  ...
 
