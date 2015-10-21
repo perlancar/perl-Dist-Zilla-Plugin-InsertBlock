@@ -29,7 +29,7 @@ sub munge_file {
     my ($self, $file) = @_;
     my $content = $file->content;
     my $directive = $self->_directive_re;
-    if ($content =~ s{^#\s*$directive:\s*(.*)\s+(\w+)\s*$}{$self->_insert_block($1, $2, $file->name)."\n"}egm) {
+    if ($content =~ s{^#\s*$directive:\s*(.*)\s+(\w+)\s*$}{$self->_insert_block($1, $2, $file->name)}egm) {
         $file->content($content);
     }
 }
@@ -46,17 +46,13 @@ sub _insert_block {
         $content = <$fh>;
     }
 
-    if ($content =~ /^=for [ \t]+ BEGIN_BLOCK: [ \t]+ \Q$name\E[ \t]*
-                     (?:\n[ \t]*)*
-                     (.+?)
-                     (?:\n[ \t]*)*
+    if ($content =~ /^=for [ \t]+ BEGIN_BLOCK: [ \t]+ \Q$name\E[ \t]* \R
+                     (.*?)
                      ^=for [ \t]+ END_BLOCK: [ \t]+ \Q$name\E/msx) {
         $self->log(["inserting block from '%s' named %s into '%s'", $file, $name, $target]);
         return $1;
-    } elsif ($content =~ /^\# [ \t]* BEGIN_BLOCK: [ \t]+ \Q$name\E[ \t]*
-                     (?:\n[ \t]*)+
-                     (.+?)
-                     (?:\n[ \t]*)+
+    } elsif ($content =~ /^\# [ \t]* BEGIN_BLOCK: [ \t]+ \Q$name\E[ \t]* \R
+                     (.*?)
                      ^\# [ \t]* END_BLOCK: [ \t]+ \Q$name\E/msx) {
         $self->log(["inserting block from '%s' named %s into '%s'", $file, $name, $target]);
         return $1;
