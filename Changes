@@ -3,7 +3,7 @@ Revision history for Dist-Zilla-Plugin-InsertBlock
 0.09    2016-09-12 (PERLANCAR)
 
 	- Introduce options in INSERT_BLOCK directive, currently the only
-	  known option is 'pod_verbatim;.
+	  known option is 'pod_verbatim'.
 
 
 0.08    2015-10-21 (PERLANCAR)
