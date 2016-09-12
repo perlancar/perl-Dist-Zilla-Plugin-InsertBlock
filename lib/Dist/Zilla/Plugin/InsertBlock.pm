@@ -29,36 +29,41 @@ sub munge_file {
     my ($self, $file) = @_;
     my $content = $file->content;
     my $directive = $self->_directive_re;
-    if ($content =~ s{^#\s*$directive:\s*(.*)\s+(\w+)\s*$}{$self->_insert_block($1, $2, $file->name)}egm) {
+    if ($content =~ s{^#\s*$directive:\s*(.*?)\s+(\w+)(?:\s+(\w+))?\s*$}
+                     {$self->_insert_block($1, $2, $3, $file->name)}egm) {
         $file->content($content);
     }
 }
 
 sub _insert_block {
-    my($self, $file, $name, $target) = @_;
+    my($self, $file, $name, $opts, $target) = @_;
 
     open my($fh), "<", $file or do {
         $self->log_fatal(["can't open %s: %s", $file, $!]);
     };
-    my $content;
-    {
-        local $/;
-        $content = <$fh>;
-    }
+    my $content = do { local $/; scalar <$fh> };
 
+    my $block;
     if ($content =~ /^=for [ \t]+ BEGIN_BLOCK: [ \t]+ \Q$name\E[ \t]* \R
                      (.*?)
                      ^=for [ \t]+ END_BLOCK: [ \t]+ \Q$name\E/msx) {
         $self->log(["inserting block from '%s' named %s into '%s'", $file, $name, $target]);
-        return $1;
+        $block = $1;
     } elsif ($content =~ /^\# [ \t]* BEGIN_BLOCK: [ \t]+ \Q$name\E[ \t]* \R
                      (.*?)
                      ^\# [ \t]* END_BLOCK: [ \t]+ \Q$name\E/msx) {
         $self->log(["inserting block from '%s' named %s into '%s'", $file, $name, $target]);
-        return $1;
+        $block = $1;
     } else {
         $self->log_fatal(["can't find block named %s in file '%s'", $name, $file]);
     }
+
+    $opts //= "";
+    if ($opts eq 'pod_verbatim') {
+        $block =~ s/^/ /mg;
+    }
+
+    return $block;
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -140,6 +145,21 @@ Block name is case-sensitive.
 
 This plugin can be useful to avoid repetition/manual copy-paste, e.g. you want
 to list POD attributes, methods, etc from a base class into a subclass.
+
+=head2 Options
+
+The C<# INSERT_BLOCK> directive accepts an optional third argument for options.
+Known options:
+
+=over
+
+=item * pod_verbatim
+
+This option pads each line of the block content with whitespace. Suitable for
+when you are inserting a block into a POD and you want to make the content of
+the block as POD verbatim.
+
+=back
 
 
 =head1 SEE ALSO
