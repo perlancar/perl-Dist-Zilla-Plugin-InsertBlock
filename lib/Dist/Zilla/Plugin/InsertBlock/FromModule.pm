@@ -26,6 +26,7 @@ sub BUILD {
 sub _insert_block {
     my($self, $module, $name, $target) = @_;
 
+    local @INC = ("lib", @INC);
     my $file = module_path(module=>$module) or
         $self->log_fatal(["can't find path for module %s", $module]);
 
