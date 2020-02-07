@@ -1,3 +1,9 @@
+0.100   2020-02-07  Released-By: PERLANCAR; Urgency: medium
+
+	- Add 'lib' to @INC temporarily to allow finding module in the same
+	  build directory.
+
+
 0.09    2016-09-12  Released-By: PERLANCAR
 
 	- Introduce options in INSERT_BLOCK directive, currently the only
