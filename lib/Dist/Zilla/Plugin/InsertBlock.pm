@@ -27,11 +27,11 @@ sub munge_files {
 
 sub munge_file {
     my ($self, $file) = @_;
-    my $content = $file->content;
+    my $content_as_bytes = $file->encoded_content;
     my $directive = $self->_directive_re;
-    if ($content =~ s{^#\s*$directive:\s*(.*?)\s+(\w+)(?:\s+(\w+))?\s*$}
-                     {$self->_insert_block($1, $2, $3, $file->name)}egm) {
-        $file->content($content);
+    if ($content_as_bytes =~ s{^#\s*$directive:\s*(.*?)\s+(\w+)(?:\s+(\w+))?\s*$}
+                              {$self->_insert_block($1, $2, $3, $file->name)}egm) {
+        $file->encoded_content($content_as_bytes);
     }
 }
 
