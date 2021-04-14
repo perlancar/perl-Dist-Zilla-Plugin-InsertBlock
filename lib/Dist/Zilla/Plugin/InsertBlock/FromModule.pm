@@ -1,6 +1,8 @@
 package Dist::Zilla::Plugin::InsertBlock::FromModule;
 
+# AUTHORITY
 # DATE
+# DIST
 # VERSION
 
 use 5.010001;

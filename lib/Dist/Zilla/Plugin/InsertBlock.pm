@@ -1,6 +1,8 @@
 package Dist::Zilla::Plugin::InsertBlock;
 
+# AUTHORITY
 # DATE
+# DIST
 # VERSION
 
 use 5.010001;
@@ -47,12 +49,19 @@ sub _insert_block {
     if ($content =~ /^=for [ \t]+ BEGIN_BLOCK: [ \t]+ \Q$name\E[ \t]* \R
                      (.*?)
                      ^=for [ \t]+ END_BLOCK: [ \t]+ \Q$name\E/msx) {
-        $self->log(["inserting block from '%s' named %s into '%s'", $file, $name, $target]);
+        $self->log(["inserting block from '%s' named %s into '%s' (=for syntax)", $file, $name, $target]);
+        $block = $1;
+    } elsif ($content =~ /^=over [ \t]+ 11 [ \t]* \R\R
+                          ^=back [ \t]+ BEGIN_BLOCK: [ \t]+ \Q$name\E[ \t]* \R
+                          (.*?)
+                          ^=over [ \t]+ 11 [ \t]* \R\R
+                          ^=back [ \t]+ END_BLOCK:   [ \t]+ \Q$name\E/msx) {
+        $self->log(["inserting block from '%s' named %s into '%s' (=over 11 syntax)", $file, $name, $target]);
         $block = $1;
     } elsif ($content =~ /^\# [ \t]* BEGIN_BLOCK: [ \t]+ \Q$name\E[ \t]* \R
                      (.*?)
                      ^\# [ \t]* END_BLOCK: [ \t]+ \Q$name\E/msx) {
-        $self->log(["inserting block from '%s' named %s into '%s'", $file, $name, $target]);
+        $self->log(["inserting block from '%s' named %s into '%s' (# syntax)", $file, $name, $target]);
         $block = $1;
     } else {
         $self->log_fatal(["can't find block named %s in file '%s'", $name, $file]);
@@ -104,6 +113,20 @@ In lib/Foo/Base.pm:
 
  ...
 
+ =head1 METHODS
+
+ =over 11
+
+ =back BEGIN_BLOCK: base_methods
+
+ =head2 meth1
+
+ =head2 meth2
+
+ =over 11
+
+ =back END_BLOCK: base_methods
+
 In lib/Foo/Bar.pm:
 
  ...
@@ -114,9 +137,17 @@ In lib/Foo/Bar.pm:
 
  =head1 ATTRIBUTES
 
- # INSERT_BLOCK: lib/Foo/Bar.pm base_attributes
+ # INSERT_BLOCK: lib/Foo/Base.pm base_attributes
 
  =head2 attr3
+
+ ...
+
+ =head1 METHODS
+
+ =INSERT_BLOCK: lib/Foo/Base.pm base_methods
+
+ =head2 meth3
 
  ...
 
@@ -129,17 +160,30 @@ of text to replace the directive.
 
 Block is marked/defined using either this syntax:
 
+ # BEGIN_BLOCK: Name
+ ...
+ # END_BLOCK: Name
+
+or this (for block inside POD):
+
  =for BEGIN_BLOCK: Name
 
  ...
 
  =for END_BLOCK: Name
 
-or this syntax:
+or this syntax (for block inside POD, in case tools like L<Pod::Weaver> removes
+C<=for> directives):
 
- # BEGIN_BLOCK: Name
+ =over 11
+
+ =back BEGIN_BLOCK: Name
+
  ...
- # END_BLOCK: Name
+
+ =over 11
+
+ =back END_BLOCK: Name
 
 Block name is case-sensitive.
 
