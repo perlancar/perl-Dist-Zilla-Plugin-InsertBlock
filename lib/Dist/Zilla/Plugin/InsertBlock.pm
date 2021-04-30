@@ -154,9 +154,9 @@ In lib/Foo/Bar.pm:
 
 =head1 DESCRIPTION
 
-This plugin finds C<< # INSERT_BLOCK: <file> <name> >> directive in your
-POD/code, find the block of text named I<name> in I<file>, and inserts the block
-of text to replace the directive.
+This plugin finds C<< # INSERT_BLOCK: <file> <name> >> directives in your
+POD/code. For each directive, it searches block of text named I<name> in file
+I<file>, and inserts the block of text to replace the directive.
 
 Block is marked/defined using either this syntax:
 
