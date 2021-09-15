@@ -1,3 +1,10 @@
+0.103   2021-09-16  Released-By: PERLANCAR; Urgency: low
+
+	- No functional changes.
+
+	- [doc] Wording/grammar.
+
+
 0.102   2021-04-14  Released-By: PERLANCAR; Urgency: medium
 
 	- Introduce =over 11 + =back syntax to work around =for directives being
