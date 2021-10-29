@@ -1,10 +1,5 @@
 package Dist::Zilla::Plugin::InsertBlock;
 
-# AUTHORITY
-# DATE
-# DIST
-# VERSION
-
 use 5.010001;
 use strict;
 use warnings;
@@ -17,8 +12,12 @@ with (
     },
 );
 
-use namespace::autoclean;
+# AUTHORITY
+# DATE
+# DIST
+# VERSION
 
+use namespace::autoclean;
 has _directive_re => (is=>'rw', default=>sub{qr/INSERT_BLOCK/});
 
 sub munge_files {
@@ -155,10 +154,10 @@ In lib/Foo/Bar.pm:
 =head1 DESCRIPTION
 
 This plugin finds C<< # INSERT_BLOCK: <file> <name> >> directives in your
-POD/code. For each directive, it searches block of text named I<name> in file
-I<file>, and inserts the block of text to replace the directive.
+POD/code. It then searches for a block of text named I<name> in file I<file>,
+and inserts the content of the block to replace the directive.
 
-Block is marked/defined using either this syntax:
+A block is marked/defined using either this syntax:
 
  # BEGIN_BLOCK: Name
  ...
@@ -172,8 +171,8 @@ or this (for block inside POD):
 
  =for END_BLOCK: Name
 
-or this syntax (for block inside POD, in case tools like L<Pod::Weaver> removes
-C<=for> directives):
+or this C<=over 11> workaround syntax (for blocks inside POD, in case tools like
+L<Pod::Weaver> remove C<=for> directives):
 
  =over 11
 
@@ -187,8 +186,8 @@ C<=for> directives):
 
 Block name is case-sensitive.
 
-This plugin can be useful to avoid repetition/manual copy-paste, e.g. you want
-to list POD attributes, methods, etc from a base class into a subclass.
+This plugin can be useful to avoid repetition/manual copy-paste, e.g. when you
+want to list POD attributes, methods, etc from a base class into a subclass.
 
 =head2 Options
 

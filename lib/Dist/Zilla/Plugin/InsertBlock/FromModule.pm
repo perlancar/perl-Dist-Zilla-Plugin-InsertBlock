@@ -1,10 +1,5 @@
 package Dist::Zilla::Plugin::InsertBlock::FromModule;
 
-# AUTHORITY
-# DATE
-# DIST
-# VERSION
-
 use 5.010001;
 use strict;
 use warnings;
@@ -12,6 +7,11 @@ use warnings;
 use Module::Path::More qw(module_path);
 
 use parent qw(Dist::Zilla::Plugin::InsertBlock);
+
+# AUTHORITY
+# DATE
+# DIST
+# VERSION
 
 sub BUILD {
     my $self = shift;
